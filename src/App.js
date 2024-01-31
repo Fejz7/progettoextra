@@ -1,28 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
-import BasicExample from './Navbar';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './App.css'
+import MyNav from './components/MyNav'
+import MyFooter from './components/MyFooter'
+import Welcome from './components/Welcome'
+import AllTheBooks from './components/AllTheBooks'
+import { Container } from 'react-bootstrap'
+
 function App() {
   return (
-    <div className="App">
-      <header>
-        
-      
     <>
-      <header>
-        <BasicExample/>
-      </header>
-      <main>
-        
-      </main>
+      <MyNav />
+      <Container>
+        <Welcome />
+        <AllTheBooks />
+      </Container>
+      <MyFooter />
     </>
-  
-
-      
-
-      </header>
-    </div>
-  );
+  )
 }
 
-export default App;
+export default App
