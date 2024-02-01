@@ -1,26 +1,28 @@
-import { Card } from "react-bootstrap";
-import { Container } from "react-bootstrap";
-import Row from "react-bootstrap/Row"
-import  Col  from "react-bootstrap/Col";
-import fantasy from '../data/fantasy.json'
+import { Component } from 'react'
+import { Card } from 'react-bootstrap'
+import CommentArea from './CommentArea'
 
-const SingleBook = ({ bookIndex}) => {
-    const book = fantasy[bookIndex]
+class SingleBook extends Component {
+  state = {
+    selected: false,
+  }
+
+  render() {
     return (
-        <Container>
-        <Row className="justify-content-center">
-            <h1 className="text-center">Fantasy</h1>
-            <Col xs={12} md={4} key={book.asin}>
-            <Card className="book-cover d-flex flex-column">
-              <Card.Img variant="top" src={book.img} />
-              <Card.Body>
-                <Card.Title>{book.title}</Card.Title>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-        </Container>
+      <Card
+        onClick={() => this.setState({ selected: !this.state.selected })}
+        style={{ border: this.state.selected ? '3px solid red' : 'none' }}
+      >
+        <Card.Img variant="top" src={this.props.book.img} />
+        <Card.Body>
+          <Card.Title style={{ color: 'black' }}>
+            {this.props.book.title}
+          </Card.Title>
+        </Card.Body>
+        <CommentArea/>{this.props.state.selected && CommentArea}
+      </Card>
     )
+  }
 }
 
-export default SingleBook;
+export default SingleBook
