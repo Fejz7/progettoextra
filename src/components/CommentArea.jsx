@@ -1,50 +1,50 @@
-import { Component } from "react";
+import { Component } from 'react'
+import CommentList from './CommentList'
+import AddComment from './AddComment'
+import Loading from './Loading'
+import Error from './Error'
 
 class CommentArea extends Component {
-    state = {
-        comments: []
-    };
+  state = {
+    comments: [],
+    isLoading: true,
+    isError: false,
+  }
 
-    fetchComment = () => {
-        const { book } = this.props; 
-
-        fetch("https://striveschool-api.herokuapp.com/api/comments/" + book.asin, {
-            headers: {
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWJiYTRkMjViMjYxNTAwMTk4YTY5NjQiLCJpYXQiOjE3MDY3OTYyNDIsImV4cCI6MTcwODAwNTg0Mn0.jJS2LlW7nrbkZHsxdyzNKV7L1Oc7prVffF3_dYC5yO8"
-            }
-        })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error("Errore");
-            }
-        })
-        .then((comments) => {
-            this.setState({ comments });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+  componentDidMount = async () => {
+    try {
+      let response = await fetch(
+        'https://striveschool-api.herokuapp.com/api/comments/' +
+          this.props.asin,
+        {
+          headers: {
+            Authorization: 'Bearer inserisci-qui-il-tuo-token',
+          },
+        }
+      )
+      console.log(response)
+      if (response.ok) {
+        let comments = await response.json()
+        this.setState({ comments: comments, isLoading: false, isError: false })
+      } else {
+        this.setState({ isLoading: false, isError: true })
+      }
+    } catch (error) {
+      console.log(error)
+      this.setState({ isLoading: false, isError: true })
     }
+  }
 
-    componentDidMount() {
-        console.log("DidMount");
-        this.fetchComment();
-    }
-
-    render() {
-        const { selected } = this.props.state;
-        
-        return selected && (
-            <div>
-                
-                {this.state.comments.map(comment => (
-                    <div key={comment._id}>{comment.text}</div>
-                ))}
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="text-center">
+        {this.state.isLoading && <Loading />}
+        {this.state.isError && <Error />}
+        <AddComment asin={this.props.asin} />
+        <CommentList commentsToShow={this.state.comments} />
+      </div>
+    )
+  }
 }
 
-export default CommentArea;
+export default CommentArea
