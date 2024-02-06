@@ -8,8 +8,8 @@ const SingleComment = ({ comment }) => {
         {
           method: 'DELETE',
           headers: {
-            Authorization: 'Bearer inserisci-qui-il-tuo-token',
-          },
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWJiYTRkMjViMjYxNTAwMTk4YTY5NjQiLCJpYXQiOjE3MDcyMjkyMjEsImV4cCI6MTcwODQzODgyMX0.HOWr5xDw2y4n-XWXUXDrwWNfaIgWw_-NXbeTGIp2mWA"
+            },
         }
       )
       if (response.ok) {

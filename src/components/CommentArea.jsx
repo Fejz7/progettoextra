@@ -7,31 +7,66 @@ import Error from './Error'
 class CommentArea extends Component {
   state = {
     comments: [],
-    isLoading: true,
+    isLoading: false,
     isError: false,
   }
 
-  componentDidMount = async () => {
-    try {
-      let response = await fetch(
-        'https://striveschool-api.herokuapp.com/api/comments/' +
-          this.props.asin,
-        {
-          headers: {
-            Authorization: 'Bearer inserisci-qui-il-tuo-token',
-          },
+  // componentDidMount = async () => {
+  //   try {
+  //     let response = await fetch(
+  //       'https://striveschool-api.herokuapp.com/api/comments/' +
+  //         this.props.asin,
+  //       {
+  //         headers: {
+  //           Authorization:
+  //             'Bearer inserisci-qui-il-tuo-token',
+  //         },
+  //       }
+  //     )
+  //     console.log(response)
+  //     if (response.ok) {
+  //       let comments = await response.json()
+  //       this.setState({ comments: comments, isLoading: false, isError: false })
+  //     } else {
+  //       console.log('error')
+  //       this.setState({ isLoading: false, isError: true })
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //     this.setState({ isLoading: false, isError: true })
+  //   }
+  // }
+
+  componentDidUpdate = async (prevProps) => {
+    if (prevProps.asin !== this.props.asin) {
+      this.setState({
+        isLoading: true,
+      })
+      try {
+        let response = await fetch(
+          'https://striveschool-api.herokuapp.com/api/comments/' +
+            this.props.asin,
+          {
+            headers: {
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWJiYTRkMjViMjYxNTAwMTk4YTY5NjQiLCJpYXQiOjE3MDcyMjkyMjEsImV4cCI6MTcwODQzODgyMX0.HOWr5xDw2y4n-XWXUXDrwWNfaIgWw_-NXbeTGIp2mWA"
+              },
+          }
+        )
+        console.log(response)
+        if (response.ok) {
+          let comments = await response.json()
+          this.setState({
+            comments: comments,
+            isLoading: false,
+            isError: false,
+          })
+        } else {
+          this.setState({ isLoading: false, isError: true })
         }
-      )
-      console.log(response)
-      if (response.ok) {
-        let comments = await response.json()
-        this.setState({ comments: comments, isLoading: false, isError: false })
-      } else {
+      } catch (error) {
+        console.log(error)
         this.setState({ isLoading: false, isError: true })
       }
-    } catch (error) {
-      console.log(error)
-      this.setState({ isLoading: false, isError: true })
     }
   }
 
