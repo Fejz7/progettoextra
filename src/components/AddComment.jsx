@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { useEffect, useState } from 'react'
+import { Button, Form } from 'react-bootstrap'
 
-const AddComment = (props) => {
+const AddComment = ({ asin }) => {
   const [comment, setComment] = useState({
     comment: '',
     rate: 1,
-    elementId: props.asin,
-  });
+    elementId: null,
+  })
 
   useEffect(() => {
-    setComment((prevComment) => ({
-      ...prevComment,
-      elementId: props.asin,
-    }));
-  }, [props.asin]);
+    setComment((c) => ({
+      ...c,
+      elementId: asin,
+    }))
+  }, [asin])
 
   const sendComment = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       let response = await fetch(
         'https://striveschool-api.herokuapp.com/api/comments',
@@ -25,25 +25,24 @@ const AddComment = (props) => {
           body: JSON.stringify(comment),
           headers: {
             'Content-type': 'application/json',
-           
-              "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWMyNDM4YmRlMzdiYzAwMWEwYmZlNTEiLCJpYXQiOjE3MDcyMzAwOTEsImV4cCI6MTcwODQzOTY5MX0.L25R1W3ChU8lUXsgbbemzini-GH4dTrpnVyJzb_Sw8Q"
-              },
+            Authorization: 'Bearer inserisci-qui-il-tuo-token',
+          },
         }
-      );
+      )
       if (response.ok) {
-        alert('Recensione inviata!');
+        alert('Recensione inviata!')
         setComment({
           comment: '',
           rate: 1,
-          elementId: props.asin,
-        });
+          elementId: null,
+        })
       } else {
-        throw new Error('Qualcosa è andato storto');
+        throw new Error('Qualcosa è andato storto')
       }
     } catch (error) {
-      alert(error);
+      alert(error)
     }
-  };
+  }
 
   return (
     <div className="my-3">
@@ -55,10 +54,10 @@ const AddComment = (props) => {
             placeholder="Inserisci qui il testo"
             value={comment.comment}
             onChange={(e) =>
-              setComment((prevComment) => ({
-                ...prevComment,
+              setComment({
+                ...comment,
                 comment: e.target.value,
-              }))
+              })
             }
           />
         </Form.Group>
@@ -68,10 +67,10 @@ const AddComment = (props) => {
             as="select"
             value={comment.rate}
             onChange={(e) =>
-              setComment((prevComment) => ({
-                ...prevComment,
+              setComment({
+                ...comment,
                 rate: e.target.value,
-              }))
+              })
             }
           >
             <option>1</option>
@@ -86,7 +85,7 @@ const AddComment = (props) => {
         </Button>
       </Form>
     </div>
-  );
-};
+  )
+}
 
-export default AddComment;
+export default AddComment
